@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<!-- saved from url=(0090)file:///Users/paul/Downloads/%E6%B0%91%E5%AE%BF%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F_2.html -->
+<html lang="zh-CN"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="民宿管理">
+<title>民宿管理系统</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC',sans-serif;background:#F2F3F7;min-height:100vh}
+.navbar{background:#1A7FC1;padding:50px 16px 14px;color:#fff;position:sticky;top:0;z-index:100}
+.navbar h1{font-size:18px;font-weight:700}
+.navbar p{font-size:12px;opacity:0.8;margin-top:2px}
+.body{padding:12px}
+.card{background:#fff;border-radius:14px;padding:14px;margin-bottom:12px;box-shadow:0 1px 4px rgba(0,0,0,0.08)}
+.month-row{display:flex;align-items:center;justify-content:space-between}
+.month-row select{font-size:17px;font-weight:700;border:none;background:transparent;color:#1a1a1a;flex:1;text-align:center;-webkit-appearance:none;outline:none}
+.arr{font-size:24px;color:#1A7FC1;font-weight:700;padding:0 8px;cursor:pointer}
+.room-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;margin-bottom:12px}
+.room-scroll::-webkit-scrollbar{display:none}
+.rtabs{display:flex;gap:8px;padding:2px;width:max-content}
+.rtab{padding:10px 18px;border-radius:22px;font-size:13px;font-weight:700;border:2px solid;cursor:pointer;white-space:nowrap}
+.rtab.pool{border-color:#1A7FC1;color:#1A7FC1;background:#fff}
+.rtab.floor2{border-color:#117A65;color:#117A65;background:#fff}
+.rtab.pool.on{background:#1A7FC1;color:#fff}
+.rtab.floor2.on{background:#117A65;color:#fff}
+.room-info{display:flex;align-items:center;gap:12px;padding:14px;border-radius:14px;margin-bottom:12px}
+.room-info.pool{background:#D6EAF8;border-left:4px solid #1A7FC1}
+.room-info.floor2{background:#D5F5E3;border-left:4px solid #117A65}
+.room-info .ico{font-size:36px}
+.room-info .txt p{font-size:16px;font-weight:700}
+.room-info .txt span{font-size:12px;color:#666}
+.room-info .pr{margin-left:auto;font-size:26px;font-weight:800}
+.room-info.pool .pr{color:#1A7FC1}
+.room-info.floor2 .pr{color:#117A65}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.sc{background:#fff;border-radius:12px;padding:12px 14px;box-shadow:0 1px 4px rgba(0,0,0,0.07)}
+.sc .lb{font-size:11px;color:#999;margin-bottom:3px}
+.sc .vl{font-size:23px;font-weight:700}
+.sc .vl small{font-size:13px;font-weight:400;color:#888}
+.sec{font-size:13px;font-weight:600;color:#888;margin:4px 0 8px;letter-spacing:0.5px}
+.days{display:flex;flex-direction:column;gap:8px;margin-bottom:16px}
+.dc{background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,0.07)}
+.dh{display:flex;align-items:center;padding:12px 14px;cursor:pointer;gap:10px}
+.db{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:#fff;flex-shrink:0}
+.pool .db{background:#1A7FC1}
+.floor2 .db{background:#117A65}
+.di{flex:1;min-width:0}
+.di .gn{font-size:15px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.di .gs{font-size:12px;color:#aaa;margin-top:1px}
+.badge{font-size:11px;padding:4px 10px;border-radius:20px;font-weight:600;flex-shrink:0}
+.badge.paid{background:#D5F5E3;color:#117A65}
+.badge.unpaid{background:#FADBD8;color:#C0392B}
+.badge.half{background:#FDEBD0;color:#D35400}
+.badge.none{background:#F0F0F0;color:#bbb}
+.cv{color:#ddd;font-size:18px;transition:transform .2s}
+.cv.op{transform:rotate(180deg)}
+.df{display:none;padding:0 14px 14px;border-top:1px solid #F5F5F5}
+.df.op{display:block}
+.fr{margin-top:12px}
+.fr label{display:block;font-size:12px;color:#999;margin-bottom:5px;font-weight:500}
+.fr input,.fr select{width:100%;padding:13px 14px;border:1.5px solid #E8E8E8;border-radius:12px;font-size:16px;color:#1a1a1a;background:#FAFAFA;-webkit-appearance:none;outline:none}
+.fr input:focus,.fr select:focus{border-color:#1A7FC1;background:#fff}
+.fr select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='7'%3E%3Cpath d='M1 1l5 4 5-4' stroke='%23bbb' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;background-color:#FAFAFA;padding-right:36px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.bsave{width:100%;padding:15px;border:none;border-radius:12px;font-size:16px;font-weight:700;color:#fff;margin-top:14px;cursor:pointer;-webkit-appearance:none}
+.pool-f .bsave{background:#1A7FC1}
+.floor2-f .bsave{background:#117A65}
+.bclr{width:100%;padding:12px;border:1.5px solid #eee;border-radius:12px;font-size:14px;color:#aaa;background:#fff;margin-top:8px;cursor:pointer;-webkit-appearance:none}
+.sumbox{background:#fff;border-radius:14px;padding:16px;box-shadow:0 1px 4px rgba(0,0,0,0.07);margin-bottom:20px}
+.sumbox h3{font-size:15px;font-weight:700;margin-bottom:12px}
+.sr{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid #F5F5F5;font-size:14px}
+.sr:last-child{border:none;font-size:17px;font-weight:700;padding-top:12px}
+.am.pool{color:#1A7FC1;font-weight:700}
+.am.floor2{color:#117A65;font-weight:700}
+.toast{position:fixed;bottom:40px;left:50%;transform:translateX(-50%) translateY(20px);background:rgba(0,0,0,0.8);color:#fff;padding:12px 28px;border-radius:30px;font-size:14px;z-index:999;opacity:0;transition:all .3s;pointer-events:none;white-space:nowrap}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+</style>
+</head>
+<body>
+<div class="navbar">
+  <h1>🏖️ 民宿管理系统</h1>
+  <p>客房预订 · 收款记录 · 月度统计</p>
+</div>
+<div class="body">
+  <div class="card">
+    <div class="month-row">
+      <span class="arr" onclick="chgM(-1)">‹</span>
+      <select id="msel" onchange="init()">
+        <option value="1">2025年 1月</option><option value="2">2025年 2月</option>
+        <option value="3">2025年 3月</option><option value="4">2025年 4月</option>
+        <option value="5" selected="">2025年 5月</option><option value="6">2025年 6月</option>
+        <option value="7">2025年 7月</option><option value="8">2025年 8月</option>
+        <option value="9">2025年 9月</option><option value="10">2025年 10月</option>
+        <option value="11">2025年 11月</option><option value="12">2025年 12月</option>
+      </select>
+      <span class="arr" onclick="chgM(1)">›</span>
+    </div>
+  </div>
+  <div class="room-scroll"><div class="rtabs" id="rtabs"><div class="rtab pool on" onclick="selR(0)">101室</div><div class="rtab pool" onclick="selR(1)">102室</div><div class="rtab pool" onclick="selR(2)">103室</div><div class="rtab floor2" onclick="selR(3)">201室</div><div class="rtab floor2" onclick="selR(4)">202室</div><div class="rtab floor2" onclick="selR(5)">203室</div><div class="rtab floor2" onclick="selR(6)">204室</div></div></div>
+  <div id="rinfo"><div class="room-info pool"><div class="ico">🏊</div><div class="txt"><p>101室</p><span>1楼 · 靠泳池</span></div><div class="pr">¥380<span style="font-size:12px;font-weight:400">/晚</span></div></div></div>
+  <div class="stats" id="stats"><div class="sc"><div class="lb">本月入住</div><div class="vl">0<small> 天</small></div></div><div class="sc"><div class="lb">本月收入</div><div class="vl" style="color:#117A65;font-size:23px">¥0</div></div><div class="sc"><div class="lb">空房天数</div><div class="vl">30<small> 天</small></div></div><div class="sc"><div class="lb">待收款</div><div class="vl" style="color:#1a1a1a">0<small> 天</small></div></div></div>
+  <div class="sec">📋 30天入住记录</div>
+  <div class="days" id="days"><div class="dc" id="dc1"><div class="dh pool" onclick="tog(1)"><div class="db">1</div><div class="di"><div class="gn"><span style="color:#ccc">点击填写</span></div><div class="gs">5月1日</div></div><span class="badge none">空房</span><span class="cv">⌄</span></div><div class="df pool-f" id="df1"><div class="two"><div class="fr"><label>入住日期</label><input type="date" id="ci1" value="" onchange="live(1)"></div><div class="fr"><label>退房日期</label><input type="date" id="co1" value="" onchange="live(1)"></div></div><div class="fr"><label>客人姓名</label><input type="text" id="gs1" value="" placeholder="请输入姓名"></div><div class="fr"><label>联系方式</label><input type="tel" id="ph1" value="" placeholder="手机号码" inputmode="tel"></div><div class="two"><div class="fr"><label>付款状态</label><select id="py1" onchange="live(1)"><option value="">请选择</option><option value="paid">✅ 已付</option><option value="unpaid">❌ 未付</option><option value="half">⏳ 预付50%</option></select></div><div class="fr"><label>金额（元）</label><input type="number" id="am1" value="" placeholder="380" inputmode="decimal"></div></div><div class="fr"><label>备注</label><input type="text" id="nt1" value="" placeholder="其他备注"></div><button class="bsave" onclick="saveD(1)">💾  保存记录</button><button class="bclr" onclick="clrD(1)">🗑️  清空此条</button></div></div><div class="dc" id="dc2"><div class="dh pool" onclick="tog(2)"><div class="db">2</div><div class="di"><div class="gn"><span style="color:#ccc">点击填写</span></div><div class="gs">5月2日</div></div><span class="badge none">空房</span><span class="cv">⌄</span></div><div class="df pool-f" id="df2"><div class="two"><div class="fr"><label>入住日期</label><input type="date" id="ci2" value="" onchange="live(2)"></div><div class="fr"><label>退房日期</label><input type="date" id="co2" value="" onchange="live(2)"></div></div><div class="fr"><label>客人姓名</label><input type="text" id="gs2" value="" placeholder="请输入姓名"></div><div class="fr"><label>联系方式</label><input type="tel" id="ph2" value="" placeholder="手机号码" inputmode="tel"></div><div class="two"><div class="fr"><label>付款状态</label><select id="py2" onchange="live(2)"><option value="">请选择</option><option value="paid">✅ 已付</option><option value="unpaid">❌ 未付</option><option value="half">⏳ 预付50%</option></select></div><div class="fr"><label>金额（元）</label><input type="number" id="am2" value="" placeholder="380" inputmode="decimal"></div></div><div class="fr"><label>备注</label><input type="text" id="nt2" value="" placeholder="其他备注"></div><button class="bsave" onclick="saveD(2)">💾  保存记录</button><button class="bclr" onclick="clrD(2)">🗑️  清空此条</button></div></div><div class="dc" id="dc3"><div class="dh pool" onclick="tog(3)"><div class="db">3</div><div class="di"><div class="gn"><span style="color:#ccc">点击填写</span></div><div class="gs">5月3日</div></div><span class="badge none">空房</span><span class="cv">⌄</span></div><div class="df pool-f" id="df3"><div class="two"><div class="fr"><label>入住日期</label><input type="date" id="ci3" value="" onchange="live(3)"></div><div class="fr"><label>退房日期</label><input type="date" id="co3" value="" onchange="live(3)"></div></div><div class="fr"><label>客人姓名</label><input type="text" id="gs3" value="" placeholder="请输入姓名"></div><div class="fr"><label>联系方式</label><input type="tel" id="ph3" value="" placeholder="手机号码" inputmode="tel"></div><div class="two"><div class="fr"><label>付款状态</label><select id="py3" onchange="live(3)"><option value="">请选择</option><option value="paid">✅ 已付</option><option value="unpaid">❌ 未付</option><option value="half">⏳ 预付50%</option></select></div><div class="fr"><label>金额（元）</label><input type="number" id="am3" value="" placeholder="380" inputmode="decimal"></div></div><div class="fr"><label>备注</label><input type="text" id="nt3" value="" placeholder="其他备注"></div><button class="bsave" onclick="saveD(3)">💾  保存记录</button><button class="bclr" onclick="clrD(3)">🗑️  清空此条</button></div></div><div class="dc" id="dc4"><div class="dh pool" onclick="tog(4)"><div class="db">4</div><div class="di"><div class="gn"><span style="color:#ccc">点击填写</span></div><div class="gs">5月4日</div></div><span class="badge none">空房</span><span class="cv">⌄</span></div><div class="df pool-f" id="df4"><div class="two"><div class="fr"><label>入住日期</label><input type="date" id="ci4" value="" onchange="live(4)"></div><div class="fr"><label>退房日期</label><input type="date" id="co4" value="" onchange="live(4)"></div></div><div class="fr"><label>客人姓名</label><input type="text" id="gs4" value="" placeholder="请输入姓名"></div><div class="fr"><label>联系方式</label><input type="tel" id="ph4" value="" placeholder="手机号码" inputmode="tel"></div><div class="two"><div class="fr"><label>付款状态</label><select id="py4" onchange="live(4)"><option value="">请选择</option><option value="paid">✅ 已付</option><option value="unpaid">❌ 未付</option><option value="half">⏳ 预付50%</option></select></div><div class="fr"><label>金额（元）</label><input type="number" id="am4" value="" placeholder="380" inputmode="decimal"></div></div><div class="fr"><label>备注</label><input type="text" id="nt4" value="" placeholder="其他备注"></div><button class="bsave" onclick="saveD(4)">💾  保存记录</button><button class="bclr" onclick="clrD(4)">🗑️  清空此条</button></div></div><div class="dc" id="dc5"><div class="dh pool" onclick="tog(5)"><div class="db">5</div><div class="di"><div class="gn"><span style="color:#ccc">点击填写</span></div><div class="gs">5月5日</div></div><span class="badge none">空房</span><span class="cv">⌄</span></div><div class="df pool-f" id="df5"><div class="two"><div class="fr"><label>入住日期</label><input type="date" id="ci5" value="" onchange="live(5)"></div><div class="fr"><label>退房日期</label><input type="date" id="co5" value="" onchange="live(5)"></div></div><div class="fr"><label>客人姓名</label><input type="text" id="gs5" value="" placeholder="请输入姓名"></div><div class="fr"><label>联系方式</label><input type="tel" id="ph5" value="" placeholder="手机号码" inputmode="tel"></div><div class="two"><div class="fr"><label>付款状态</label><select id="py5" onchange="live(5)"><option value="">请选择</option><option value="paid">✅ 已付</option><option value="unpaid">❌ 未付</option><option value="half">⏳ 预付50%</option></select></div><div class="fr"><label>金额（元）</label><input type="number" id="am5" value="" placeholder="380" inputmode="decimal"></div></div><div class="fr"><label>备注</label><input type="text" id="nt5" value="" placeholder="其他备注"></div><button class="bsave" onclick="saveD(5)">💾  保存记录</button><button class="bclr" onclick="clrD(5)">🗑️  清空此条</button></div></div><div class="dc" id="dc6"><div class="dh pool" onclick="tog(6)"><div class="db">6</div><div class="di"><div class="gn"><span style="color:#ccc">点击填写</span></div><div class="gs">5月6日</div></div><span class="badge none">空房</span><span class="cv">⌄</span></div><div class="df pool-f" id="df6"><div class="two"><div class="fr"><label>入住日期</label><input type="date" id="ci6" value="" onchange="live(6)"></div><div class="fr"><label>退房日期</label><input type="date" id="co6" value="" onchange="live(6)"></div></div><div class="fr"><label>客人姓名</label><input type="text" id="gs6" value="" placeholder="请输入姓名"></div><div class="fr"><label>联系方式</label><input type="tel" id="ph6" value="" placeholder="手机号码" inputmode="tel"></div><div class="two"><div class="fr"><label>付款状态</label><select id="py6" onchange="live(6)"><option value="">请选择</option><option value="paid">✅ 已付</option><option value="unpaid">❌ 未付</option><option value="half">⏳ 预付50%</option></select></div><div class="fr"><label>金额（元）</label><input type="number" id="am6" value="" placeholder="380" inputmode="decimal"></div></div><div class="fr"><label>备注</label><input type="text" id="nt6" value="" placeholder="其他备注"></div><button class="bsave" onclick="saveD(6)">💾  保存记录</button><button class="bclr" onclick="clrD(6)">🗑️  清空此条</button></div></div><div class="dc" id="dc7"><div class="dh pool" onclick="tog(7)"><div class="db">7</div><div class="di"><div class="gn"><span style="color:#ccc">点击填写</span></div><div class="gs">5月7日</div></div><span class="badge none">空房</span><span class="cv">⌄</span></div><div class="df pool-f" id="df7"><div class="two"><div class="fr"><label>入住日期</label><input type="date" id="ci7" value="" onchange="live(7)"></div><div class="fr"><label>退房日期</label><input type="date" id="co7" value="" onchange="live(7)"></div></div><div class="fr"><label>客人姓名</label><input type="text" id="gs7" value="" placeholder="请输入姓名"></div><div class="fr"><label>联系方式</label><input type="tel" id="ph7" value="" placeholder="手机号码" inputmode="tel"></div><div class="two"><div class="fr"><label>付款状态</label><select id="py7" onchange="live(7)"><option value="">请选择</option><option value="paid">✅ 已付</option><option value="unpaid">❌ 未付</option><option value="half">⏳ 预付50%</option></select></div><div class="fr"><label>金额（元）</label><input type="number" id="am7" value="" placeholder="380" inputmode="decimal"></div></div><div class="fr"><label>备注</label><input type="text" id="nt7" value="" placeholder="其他备注"></div><button class="bsave" onclick="saveD(7)">💾  保存记录</button><button class="bclr" onclick="clrD(7)">🗑️  清空此条</button></div></div><div class="dc" id="dc8"><div class="dh pool" onclick="tog(8)"><div class="db">8</div><div class="di"><div class="gn"><span style="color:#ccc">点击填写</span></div><div class="gs">5月8日</div></div><span class="badge none">空房</span><span class="cv">⌄</span></div><div class="df pool-f" id="df8"><div class="two"><div class="fr"><label>入住日期</label><input type="date" id="ci8" value="" onchange="live(8)"></div><div class="fr"><label>退房日期</label><input type="date" id="co8" value="" onchange="live(8)"></div></div><div class="fr"><label>客人姓名</label><input type="text" id="gs8" value="" placeholder="请输入姓名"></div><div class="fr"><label>联系方式</label><input type="tel" id="ph8" value="" placeholder="手机号码" inputmode="tel"></div><div class="two"><div class="fr"><label>付款状态</label><select id="py8" onchange="live(8)"><option value="">请选择</option><option value="paid">✅ 已付</option><option value="unpaid">❌ 未付</option><option value="half">⏳ 预付50%</option></select></div><div class="fr"><label>金额（元）</label><input type="number" id="am8" value="" placeholder="380" inputmode="decimal"></div></div><div class="fr"><label>备注</label><input type="text" id="nt8" value="" placeholder="其他备注"></div><button class="bsave" onclick="saveD(8)">💾  保存记录</button><button class="bclr" onclick="clrD(8)">🗑️  清空此条</button></div></div><div class="dc" id="dc9"><div class="dh pool" onclick="tog(9)"><div class="db">9</div><div class="di"><div class="gn"><span style="color:#ccc">点击填写</span></div><div class="gs">5月9日</div></div><span class="badge none">空房</span><span class="cv">⌄</span></div><div class="df pool-f" id="df9"><div class="two"><div class="fr"><label>入住日期</label><input type="date" id="ci9" value="" onchange="live(9)"></div><div class="fr"><label>退房日期</label><input type="date" id="co9" value="" onchange="live(9)"></div></div><div class="fr"><label>客人姓名</label><input type="text" id="gs9" value="" placeholder="请输入姓名"></div><div class="fr"><label>联系方式</label><input type="tel" id="ph9" value="" placeholder="手机号码" inputmode="tel"></div><div class="two"><div class="fr"><label>付款状态</label><select id="py9" onchange="live(9)"><option value="">请选择</option><option value="paid">✅ 已付</option><option value="unpaid">❌ 未付</option><option value="half">⏳ 预付50%</option></select></div><div class="fr"><label>金额（元）</label><input type="number" id="am9" value="" placeholder="380" inputmode="decimal"></div></div><div class="fr"><label>备注</label><input type="text" id="nt9" value="" placeholder="其他备注"></div><button class="bsave" onclick="saveD(9)">💾  保存记录</button><button class="bclr" onclick="clrD(9)">🗑️  清空此条</button></div></div><div class="dc" id="dc10"><div class="dh pool" onclick="tog(10)"><div class="db">10</div><div class="di"><div class="gn"><span style="color:#ccc">点击填写</span></div><div class="gs">5月10日</div></div><span class="badge none">空房</span><span class="cv">⌄</span></div><div class="df pool-f" id="df10"><div class="two"><div class="fr"><label>入住日期</label><input type="date" id="ci10" value="" onchange="live(10)"></div><div class="fr"><label>退房日期</label><input type="date" id="co10" value="" onchange="live(10)"></div></div><div class="fr"><label>客人姓名</label><input type="text" id="gs10" value="" placeholder="请输入姓名"></div><div class="fr"><label>联系方式</label><input type="tel" id="ph10" value="" placeholder="手机号码" inputmode="tel"></div><div class="two"><div class="fr"><label>付款状态</label><select id="py10" onchange="live(10)"><option value="">请选择</option><option value="paid">✅ 已付</option><option value="unpaid">❌ 未付</option><option value="half">⏳ 预付50%</option></select></div><div class="fr"><label>金额（元）</label><input type="number" id="am10" value="" placeholder="380" inputmode="decimal"></div></div><div class="fr"><label>备注</label><input type="text" id="nt10" value="" placeholder="其他备注"></div><button class="bsave" onclick="saveD(10)">💾  保存记录</button><button class="bclr" onclick="clrD(10)">🗑️  清空此条</button></div></div><div class="dc" id="dc11"><div class="dh pool" onclick="tog(11)"><div class="db">11</div><div class="di"><div class="gn"><span style="color:#ccc">点击填写</span></div><div class="gs">5月11日</div></div><span class="badge none">空房</span><span class="cv">⌄</span></div><div class="df pool-f" id="df11"><div class="two"><div class="fr"><label>入住日期</label><input type="date" id="ci11" value="" onchange="live(11)"></div><div class="fr"><label>退房日期</label><input type="date" id="co11" value="" onchange="live(11)"></div></div><div class="fr"><label>客人姓名</label><input type="text" id="gs11" value="" placeholder="请输入姓名"></div><div class="fr"><label>联系方式</label><input type="tel" id="ph11" value="" placeholder="手机号码" inputmode="tel"></div><div class="two"><div class="fr"><label>付款状态</label><select id="py11" onchange="live(11)"><option value="">请选择</option><option value="paid">✅ 已付</option><option value="unpaid">❌ 未付</option><option value="half">⏳ 预付50%</option></select></div><div class="fr"><label>金额（元）</label><input type="number" id="am11" value="" placeholder="380" inputmode="decimal"></div></div><div class="fr"><label>备注</label><input type="text" id="nt11" value="" placeholder="其他备注"></div><button class="bsave" onclick="saveD(11)">💾  保存记录</button><button class="bclr" onclick="clrD(11)">🗑️  清空此条</button></div></div><div class="dc" id="dc12"><div class="dh pool" onclick="tog(12)"><div class="db">12</div><div class="di"><div class="gn"><span style="color:#ccc">点击填写</span></div><div class="gs">5月12日</div></div><span class="badge none">空房</span><span class="cv">⌄</span></div><div class="df pool-f" id="df12"><div class="two"><div class="fr"><label>入住日期</label><input type="date" id="ci12" value="" onchange="live(12)"></div><div class="fr"><label>退房日期</label><input type="date" id="co12" value="" onchange="live(12)"></div></div><div class="fr"><label>客人姓名</label><input type="text" id="gs12" value="" placeholder="请输入姓名"></div><div class="fr"><label>联系方式</label><input type="tel" id="ph12" value="" placeholder="手机号码" inputmode="tel"></div><div class="two"><div class="fr"><label>付款状态</label><select id="py12" onchange="live(12)"><option value="">请选择</option><option value="paid">✅ 已付</option><option value="unpaid">❌ 未付</option><option value="half">⏳ 预付50%</option></select></div><div class="fr"><label>金额（元）</label><input type="number" id="am12" value="" placeholder="380" inputmode="decimal"></div></div><div class="fr"><label>备注</label><input type="text" id="nt12" value="" placeholder="其他备注"></div><button class="bsave" onclick="saveD(12)">💾  保存记录</button><button class="bclr" onclick="clrD(12)">🗑️  清空此条</button></div></div><div class="dc" id="dc13"><div class="dh pool" onclick="tog(13)"><div class="db">13</div><div class="di"><div class="gn"><span style="color:#ccc">点击填写</span></div><div class="gs">5月13日</div></div><span class="badge none">空房</span><span class="cv">⌄</span></div><div class="df pool-f" id="df13"><div class="two"><div class="fr"><label>入住日期</label><input type="date" id="ci13" value="" onchange="live(13)"></div><div class="fr"><label>退房日期</label><input type="date" id="co13" value="" onchange="live(13)"></div></div><div class="fr"><label>客人姓名</label><input type="text" id="gs13" value="" placeholder="请输入姓名"></div><div class="fr"><label>联系方式</label><input type="tel" id="ph13" value="" placeholder="手机号码" inputmode="tel"></div><div class="two"><div class="fr"><label>付款状态</label><select id="py13" onchange="live(13)"><option value="">请选择</option><option value="paid">✅ 已付</option><option value="unpaid">❌ 未付</option><option value="half">⏳ 预付50%</option></select></div><div class="fr"><label>金额（元）</label><input type="number" id="am13" value="" placeholder="380" inputmode="decimal"></div></div><div class="fr"><label>备注</label><input type="text" id="nt13" value="" placeholder="其他备注"></div><button class="bsave" onclick="saveD(13)">💾  保存记录</button><button class="bclr" onclick="clrD(13)">🗑️  清空此条</button></div></div><div class="dc" id="dc14"><div class="dh pool" onclick="tog(14)"><div class="db">14</div><div class="di"><div class="gn"><span style="color:#ccc">点击填写</span></div><div class="gs">5月14日</div></div><span class="badge none">空房</span><span class="cv">⌄</span></div><div class="df pool-f" id="df14"><div class="two"><div class="fr"><label>入住日期</label><input type="date" id="ci14" value="" onchange="live(14)"></div><div class="fr"><label>退房日期</label><input type="date" id="co14" value="" onchange="live(14)"></div></div><div class="fr"><label>客人姓名</label><input type="text" id="gs14" value="" placeholder="请输入姓名"></div><div class="fr"><label>联系方式</label><input type="tel" id="ph14" value="" placeholder="手机号码" inputmode="tel"></div><div class="two"><div class="fr"><label>付款状态</label><select id="py14" onchange="live(14)"><option value="">请选择</option><option value="paid">✅ 已付</option><option value="unpaid">❌ 未付</option><option value="half">⏳ 预付50%</option></select></div><div class="fr"><label>金额（元）</label><input type="number" id="am14" value="" placeholder="380" inputmode="decimal"></div></div><div class="fr"><label>备注</label><input type="text" id="nt14" value="" placeholder="其他备注"></div><button class="bsave" onclick="saveD(14)">💾  保存记录</button><button class="bclr" onclick="clrD(14)">🗑️  清空此条</button></div></div><div class="dc" id="dc15"><div class="dh pool" onclick="tog(15)"><div class="db">15</div><div class="di"><div class="gn"><span style="color:#ccc">点击填写</span></div><div class="gs">5月15日</div></div><span class="badge none">空房</span><span class="cv">⌄</span></div><div class="df pool-f" id="df15"><div class="two"><div class="fr"><label>入住日期</label><input type="date" id="ci15" value="" onchange="live(15)"></div><div class="fr"><label>退房日期</label><input type="date" id="co15" value="" onchange="live(15)"></div></div><div class="fr"><label>客人姓名</label><input type="text" id="gs15" value="" placeholder="请输入姓名"></div><div class="fr"><label>联系方式</label><input type="tel" id="ph15" value="" placeholder="手机号码" inputmode="tel"></div><div class="two"><div class="fr"><label>付款状态</label><select id="py15" onchange="live(15)"><option value="">请选择</option><option value="paid">✅ 已付</option><option value="unpaid">❌ 未付</option><option value="half">⏳ 预付50%</option></select></div><div class="fr"><label>金额（元）</label><input type="number" id="am15" value="" placeholder="380" inputmode="decimal"></div></div><div class="fr"><label>备注</label><input type="text" id="nt15" value="" placeholder="其他备注"></div><button class="bsave" onclick="saveD(15)">💾  保存记录</button><button class="bclr" onclick="clrD(15)">🗑️  清空此条</button></div></div><div class="dc" id="dc16"><div class="dh pool" onclick="tog(16)"><div class="db">16</div><div class="di"><div class="gn"><span style="color:#ccc">点击填写</span></div><div class="gs">5月16日</div></div><span class="badge none">空房</span><span class="cv">⌄</span></div><div class="df pool-f" id="df16"><div class="two"><div class="fr"><label>入住日期</label><input type="date" id="ci16" value="" onchange="live(16)"></div><div class="fr"><label>退房日期</label><input type="date" id="co16" value="" onchange="live(16)"></div></div><div class="fr"><label>客人姓名</label><input type="text" id="gs16" value="" placeholder="请输入姓名"></div><div class="fr"><label>联系方式</label><input type="tel" id="ph16" value="" placeholder="手机号码" inputmode="tel"></div><div class="two"><div class="fr"><label>付款状态</label><select id="py16" onchange="live(16)"><option value="">请选择</option><option value="paid">✅ 已付</option><option value="unpaid">❌ 未付</option><option value="half">⏳ 预付50%</option></select></div><div class="fr"><label>金额（元）</label><input type="number" id="am16" value="" placeholder="380" inputmode="decimal"></div></div><div class="fr"><label>备注</label><input type="text" id="nt16" value="" placeholder="其他备注"></div><button class="bsave" onclick="saveD(16)">💾  保存记录</button><button class="bclr" onclick="clrD(16)">🗑️  清空此条</button></div></div><div class="dc" id="dc17"><div class="dh pool" onclick="tog(17)"><div class="db">17</div><div class="di"><div class="gn"><span style="color:#ccc">点击填写</span></div><div class="gs">5月17日</div></div><span class="badge none">空房</span><span class="cv">⌄</span></div><div class="df pool-f" id="df17"><div class="two"><div class="fr"><label>入住日期</label><input type="date" id="ci17" value="" onchange="live(17)"></div><div class="fr"><label>退房日期</label><input type="date" id="co17" value="" onchange="live(17)"></div></div><div class="fr"><label>客人姓名</label><input type="text" id="gs17" value="" placeholder="请输入姓名"></div><div class="fr"><label>联系方式</label><input type="tel" id="ph17" value="" placeholder="手机号码" inputmode="tel"></div><div class="two"><div class="fr"><label>付款状态</label><select id="py17" onchange="live(17)"><option value="">请选择</option><option value="paid">✅ 已付</option><option value="unpaid">❌ 未付</option><option value="half">⏳ 预付50%</option></select></div><div class="fr"><label>金额（元）</label><input type="number" id="am17" value="" placeholder="380" inputmode="decimal"></div></div><div class="fr"><label>备注</label><input type="text" id="nt17" value="" placeholder="其他备注"></div><button class="bsave" onclick="saveD(17)">💾  保存记录</button><button class="bclr" onclick="clrD(17)">🗑️  清空此条</button></div></div><div class="dc" id="dc18"><div class="dh pool" onclick="tog(18)"><div class="db">18</div><div class="di"><div class="gn"><span style="color:#ccc">点击填写</span></div><div class="gs">5月18日</div></div><span class="badge none">空房</span><span class="cv">⌄</span></div><div class="df pool-f" id="df18"><div class="two"><div class="fr"><label>入住日期</label><input type="date" id="ci18" value="" onchange="live(18)"></div><div class="fr"><label>退房日期</label><input type="date" id="co18" value="" onchange="live(18)"></div></div><div class="fr"><label>客人姓名</label><input type="text" id="gs18" value="" placeholder="请输入姓名"></div><div class="fr"><label>联系方式</label><input type="tel" id="ph18" value="" placeholder="手机号码" inputmode="tel"></div><div class="two"><div class="fr"><label>付款状态</label><select id="py18" onchange="live(18)"><option value="">请选择</option><option value="paid">✅ 已付</option><option value="unpaid">❌ 未付</option><option value="half">⏳ 预付50%</option></select></div><div class="fr"><label>金额（元）</label><input type="number" id="am18" value="" placeholder="380" inputmode="decimal"></div></div><div class="fr"><label>备注</label><input type="text" id="nt18" value="" placeholder="其他备注"></div><button class="bsave" onclick="saveD(18)">💾  保存记录</button><button class="bclr" onclick="clrD(18)">🗑️  清空此条</button></div></div><div class="dc" id="dc19"><div class="dh pool" onclick="tog(19)"><div class="db">19</div><div class="di"><div class="gn"><span style="color:#ccc">点击填写</span></div><div class="gs">5月19日</div></div><span class="badge none">空房</span><span class="cv">⌄</span></div><div class="df pool-f" id="df19"><div class="two"><div class="fr"><label>入住日期</label><input type="date" id="ci19" value="" onchange="live(19)"></div><div class="fr"><label>退房日期</label><input type="date" id="co19" value="" onchange="live(19)"></div></div><div class="fr"><label>客人姓名</label><input type="text" id="gs19" value="" placeholder="请输入姓名"></div><div class="fr"><label>联系方式</label><input type="tel" id="ph19" value="" placeholder="手机号码" inputmode="tel"></div><div class="two"><div class="fr"><label>付款状态</label><select id="py19" onchange="live(19)"><option value="">请选择</option><option value="paid">✅ 已付</option><option value="unpaid">❌ 未付</option><option value="half">⏳ 预付50%</option></select></div><div class="fr"><label>金额（元）</label><input type="number" id="am19" value="" placeholder="380" inputmode="decimal"></div></div><div class="fr"><label>备注</label><input type="text" id="nt19" value="" placeholder="其他备注"></div><button class="bsave" onclick="saveD(19)">💾  保存记录</button><button class="bclr" onclick="clrD(19)">🗑️  清空此条</button></div></div><div class="dc" id="dc20"><div class="dh pool" onclick="tog(20)"><div class="db">20</div><div class="di"><div class="gn"><span style="color:#ccc">点击填写</span></div><div class="gs">5月20日</div></div><span class="badge none">空房</span><span class="cv">⌄</span></div><div class="df pool-f" id="df20"><div class="two"><div class="fr"><label>入住日期</label><input type="date" id="ci20" value="" onchange="live(20)"></div><div class="fr"><label>退房日期</label><input type="date" id="co20" value="" onchange="live(20)"></div></div><div class="fr"><label>客人姓名</label><input type="text" id="gs20" value="" placeholder="请输入姓名"></div><div class="fr"><label>联系方式</label><input type="tel" id="ph20" value="" placeholder="手机号码" inputmode="tel"></div><div class="two"><div class="fr"><label>付款状态</label><select id="py20" onchange="live(20)"><option value="">请选择</option><option value="paid">✅ 已付</option><option value="unpaid">❌ 未付</option><option value="half">⏳ 预付50%</option></select></div><div class="fr"><label>金额（元）</label><input type="number" id="am20" value="" placeholder="380" inputmode="decimal"></div></div><div class="fr"><label>备注</label><input type="text" id="nt20" value="" placeholder="其他备注"></div><button class="bsave" onclick="saveD(20)">💾  保存记录</button><button class="bclr" onclick="clrD(20)">🗑️  清空此条</button></div></div><div class="dc" id="dc21"><div class="dh pool" onclick="tog(21)"><div class="db">21</div><div class="di"><div class="gn"><span style="color:#ccc">点击填写</span></div><div class="gs">5月21日</div></div><span class="badge none">空房</span><span class="cv">⌄</span></div><div class="df pool-f" id="df21"><div class="two"><div class="fr"><label>入住日期</label><input type="date" id="ci21" value="" onchange="live(21)"></div><div class="fr"><label>退房日期</label><input type="date" id="co21" value="" onchange="live(21)"></div></div><div class="fr"><label>客人姓名</label><input type="text" id="gs21" value="" placeholder="请输入姓名"></div><div class="fr"><label>联系方式</label><input type="tel" id="ph21" value="" placeholder="手机号码" inputmode="tel"></div><div class="two"><div class="fr"><label>付款状态</label><select id="py21" onchange="live(21)"><option value="">请选择</option><option value="paid">✅ 已付</option><option value="unpaid">❌ 未付</option><option value="half">⏳ 预付50%</option></select></div><div class="fr"><label>金额（元）</label><input type="number" id="am21" value="" placeholder="380" inputmode="decimal"></div></div><div class="fr"><label>备注</label><input type="text" id="nt21" value="" placeholder="其他备注"></div><button class="bsave" onclick="saveD(21)">💾  保存记录</button><button class="bclr" onclick="clrD(21)">🗑️  清空此条</button></div></div><div class="dc" id="dc22"><div class="dh pool" onclick="tog(22)"><div class="db">22</div><div class="di"><div class="gn"><span style="color:#ccc">点击填写</span></div><div class="gs">5月22日</div></div><span class="badge none">空房</span><span class="cv">⌄</span></div><div class="df pool-f" id="df22"><div class="two"><div class="fr"><label>入住日期</label><input type="date" id="ci22" value="" onchange="live(22)"></div><div class="fr"><label>退房日期</label><input type="date" id="co22" value="" onchange="live(22)"></div></div><div class="fr"><label>客人姓名</label><input type="text" id="gs22" value="" placeholder="请输入姓名"></div><div class="fr"><label>联系方式</label><input type="tel" id="ph22" value="" placeholder="手机号码" inputmode="tel"></div><div class="two"><div class="fr"><label>付款状态</label><select id="py22" onchange="live(22)"><option value="">请选择</option><option value="paid">✅ 已付</option><option value="unpaid">❌ 未付</option><option value="half">⏳ 预付50%</option></select></div><div class="fr"><label>金额（元）</label><input type="number" id="am22" value="" placeholder="380" inputmode="decimal"></div></div><div class="fr"><label>备注</label><input type="text" id="nt22" value="" placeholder="其他备注"></div><button class="bsave" onclick="saveD(22)">💾  保存记录</button><button class="bclr" onclick="clrD(22)">🗑️  清空此条</button></div></div><div class="dc" id="dc23"><div class="dh pool" onclick="tog(23)"><div class="db">23</div><div class="di"><div class="gn"><span style="color:#ccc">点击填写</span></div><div class="gs">5月23日</div></div><span class="badge none">空房</span><span class="cv">⌄</span></div><div class="df pool-f" id="df23"><div class="two"><div class="fr"><label>入住日期</label><input type="date" id="ci23" value="" onchange="live(23)"></div><div class="fr"><label>退房日期</label><input type="date" id="co23" value="" onchange="live(23)"></div></div><div class="fr"><label>客人姓名</label><input type="text" id="gs23" value="" placeholder="请输入姓名"></div><div class="fr"><label>联系方式</label><input type="tel" id="ph23" value="" placeholder="手机号码" inputmode="tel"></div><div class="two"><div class="fr"><label>付款状态</label><select id="py23" onchange="live(23)"><option value="">请选择</option><option value="paid">✅ 已付</option><option value="unpaid">❌ 未付</option><option value="half">⏳ 预付50%</option></select></div><div class="fr"><label>金额（元）</label><input type="number" id="am23" value="" placeholder="380" inputmode="decimal"></div></div><div class="fr"><label>备注</label><input type="text" id="nt23" value="" placeholder="其他备注"></div><button class="bsave" onclick="saveD(23)">💾  保存记录</button><button class="bclr" onclick="clrD(23)">🗑️  清空此条</button></div></div><div class="dc" id="dc24"><div class="dh pool" onclick="tog(24)"><div class="db">24</div><div class="di"><div class="gn"><span style="color:#ccc">点击填写</span></div><div class="gs">5月24日</div></div><span class="badge none">空房</span><span class="cv">⌄</span></div><div class="df pool-f" id="df24"><div class="two"><div class="fr"><label>入住日期</label><input type="date" id="ci24" value="" onchange="live(24)"></div><div class="fr"><label>退房日期</label><input type="date" id="co24" value="" onchange="live(24)"></div></div><div class="fr"><label>客人姓名</label><input type="text" id="gs24" value="" placeholder="请输入姓名"></div><div class="fr"><label>联系方式</label><input type="tel" id="ph24" value="" placeholder="手机号码" inputmode="tel"></div><div class="two"><div class="fr"><label>付款状态</label><select id="py24" onchange="live(24)"><option value="">请选择</option><option value="paid">✅ 已付</option><option value="unpaid">❌ 未付</option><option value="half">⏳ 预付50%</option></select></div><div class="fr"><label>金额（元）</label><input type="number" id="am24" value="" placeholder="380" inputmode="decimal"></div></div><div class="fr"><label>备注</label><input type="text" id="nt24" value="" placeholder="其他备注"></div><button class="bsave" onclick="saveD(24)">💾  保存记录</button><button class="bclr" onclick="clrD(24)">🗑️  清空此条</button></div></div><div class="dc" id="dc25"><div class="dh pool" onclick="tog(25)"><div class="db">25</div><div class="di"><div class="gn"><span style="color:#ccc">点击填写</span></div><div class="gs">5月25日</div></div><span class="badge none">空房</span><span class="cv">⌄</span></div><div class="df pool-f" id="df25"><div class="two"><div class="fr"><label>入住日期</label><input type="date" id="ci25" value="" onchange="live(25)"></div><div class="fr"><label>退房日期</label><input type="date" id="co25" value="" onchange="live(25)"></div></div><div class="fr"><label>客人姓名</label><input type="text" id="gs25" value="" placeholder="请输入姓名"></div><div class="fr"><label>联系方式</label><input type="tel" id="ph25" value="" placeholder="手机号码" inputmode="tel"></div><div class="two"><div class="fr"><label>付款状态</label><select id="py25" onchange="live(25)"><option value="">请选择</option><option value="paid">✅ 已付</option><option value="unpaid">❌ 未付</option><option value="half">⏳ 预付50%</option></select></div><div class="fr"><label>金额（元）</label><input type="number" id="am25" value="" placeholder="380" inputmode="decimal"></div></div><div class="fr"><label>备注</label><input type="text" id="nt25" value="" placeholder="其他备注"></div><button class="bsave" onclick="saveD(25)">💾  保存记录</button><button class="bclr" onclick="clrD(25)">🗑️  清空此条</button></div></div><div class="dc" id="dc26"><div class="dh pool" onclick="tog(26)"><div class="db">26</div><div class="di"><div class="gn"><span style="color:#ccc">点击填写</span></div><div class="gs">5月26日</div></div><span class="badge none">空房</span><span class="cv">⌄</span></div><div class="df pool-f" id="df26"><div class="two"><div class="fr"><label>入住日期</label><input type="date" id="ci26" value="" onchange="live(26)"></div><div class="fr"><label>退房日期</label><input type="date" id="co26" value="" onchange="live(26)"></div></div><div class="fr"><label>客人姓名</label><input type="text" id="gs26" value="" placeholder="请输入姓名"></div><div class="fr"><label>联系方式</label><input type="tel" id="ph26" value="" placeholder="手机号码" inputmode="tel"></div><div class="two"><div class="fr"><label>付款状态</label><select id="py26" onchange="live(26)"><option value="">请选择</option><option value="paid">✅ 已付</option><option value="unpaid">❌ 未付</option><option value="half">⏳ 预付50%</option></select></div><div class="fr"><label>金额（元）</label><input type="number" id="am26" value="" placeholder="380" inputmode="decimal"></div></div><div class="fr"><label>备注</label><input type="text" id="nt26" value="" placeholder="其他备注"></div><button class="bsave" onclick="saveD(26)">💾  保存记录</button><button class="bclr" onclick="clrD(26)">🗑️  清空此条</button></div></div><div class="dc" id="dc27"><div class="dh pool" onclick="tog(27)"><div class="db">27</div><div class="di"><div class="gn"><span style="color:#ccc">点击填写</span></div><div class="gs">5月27日</div></div><span class="badge none">空房</span><span class="cv">⌄</span></div><div class="df pool-f" id="df27"><div class="two"><div class="fr"><label>入住日期</label><input type="date" id="ci27" value="" onchange="live(27)"></div><div class="fr"><label>退房日期</label><input type="date" id="co27" value="" onchange="live(27)"></div></div><div class="fr"><label>客人姓名</label><input type="text" id="gs27" value="" placeholder="请输入姓名"></div><div class="fr"><label>联系方式</label><input type="tel" id="ph27" value="" placeholder="手机号码" inputmode="tel"></div><div class="two"><div class="fr"><label>付款状态</label><select id="py27" onchange="live(27)"><option value="">请选择</option><option value="paid">✅ 已付</option><option value="unpaid">❌ 未付</option><option value="half">⏳ 预付50%</option></select></div><div class="fr"><label>金额（元）</label><input type="number" id="am27" value="" placeholder="380" inputmode="decimal"></div></div><div class="fr"><label>备注</label><input type="text" id="nt27" value="" placeholder="其他备注"></div><button class="bsave" onclick="saveD(27)">💾  保存记录</button><button class="bclr" onclick="clrD(27)">🗑️  清空此条</button></div></div><div class="dc" id="dc28"><div class="dh pool" onclick="tog(28)"><div class="db">28</div><div class="di"><div class="gn"><span style="color:#ccc">点击填写</span></div><div class="gs">5月28日</div></div><span class="badge none">空房</span><span class="cv">⌄</span></div><div class="df pool-f" id="df28"><div class="two"><div class="fr"><label>入住日期</label><input type="date" id="ci28" value="" onchange="live(28)"></div><div class="fr"><label>退房日期</label><input type="date" id="co28" value="" onchange="live(28)"></div></div><div class="fr"><label>客人姓名</label><input type="text" id="gs28" value="" placeholder="请输入姓名"></div><div class="fr"><label>联系方式</label><input type="tel" id="ph28" value="" placeholder="手机号码" inputmode="tel"></div><div class="two"><div class="fr"><label>付款状态</label><select id="py28" onchange="live(28)"><option value="">请选择</option><option value="paid">✅ 已付</option><option value="unpaid">❌ 未付</option><option value="half">⏳ 预付50%</option></select></div><div class="fr"><label>金额（元）</label><input type="number" id="am28" value="" placeholder="380" inputmode="decimal"></div></div><div class="fr"><label>备注</label><input type="text" id="nt28" value="" placeholder="其他备注"></div><button class="bsave" onclick="saveD(28)">💾  保存记录</button><button class="bclr" onclick="clrD(28)">🗑️  清空此条</button></div></div><div class="dc" id="dc29"><div class="dh pool" onclick="tog(29)"><div class="db">29</div><div class="di"><div class="gn"><span style="color:#ccc">点击填写</span></div><div class="gs">5月29日</div></div><span class="badge none">空房</span><span class="cv">⌄</span></div><div class="df pool-f" id="df29"><div class="two"><div class="fr"><label>入住日期</label><input type="date" id="ci29" value="" onchange="live(29)"></div><div class="fr"><label>退房日期</label><input type="date" id="co29" value="" onchange="live(29)"></div></div><div class="fr"><label>客人姓名</label><input type="text" id="gs29" value="" placeholder="请输入姓名"></div><div class="fr"><label>联系方式</label><input type="tel" id="ph29" value="" placeholder="手机号码" inputmode="tel"></div><div class="two"><div class="fr"><label>付款状态</label><select id="py29" onchange="live(29)"><option value="">请选择</option><option value="paid">✅ 已付</option><option value="unpaid">❌ 未付</option><option value="half">⏳ 预付50%</option></select></div><div class="fr"><label>金额（元）</label><input type="number" id="am29" value="" placeholder="380" inputmode="decimal"></div></div><div class="fr"><label>备注</label><input type="text" id="nt29" value="" placeholder="其他备注"></div><button class="bsave" onclick="saveD(29)">💾  保存记录</button><button class="bclr" onclick="clrD(29)">🗑️  清空此条</button></div></div><div class="dc" id="dc30"><div class="dh pool" onclick="tog(30)"><div class="db">30</div><div class="di"><div class="gn"><span style="color:#ccc">点击填写</span></div><div class="gs">5月30日</div></div><span class="badge none">空房</span><span class="cv">⌄</span></div><div class="df pool-f" id="df30"><div class="two"><div class="fr"><label>入住日期</label><input type="date" id="ci30" value="" onchange="live(30)"></div><div class="fr"><label>退房日期</label><input type="date" id="co30" value="" onchange="live(30)"></div></div><div class="fr"><label>客人姓名</label><input type="text" id="gs30" value="" placeholder="请输入姓名"></div><div class="fr"><label>联系方式</label><input type="tel" id="ph30" value="" placeholder="手机号码" inputmode="tel"></div><div class="two"><div class="fr"><label>付款状态</label><select id="py30" onchange="live(30)"><option value="">请选择</option><option value="paid">✅ 已付</option><option value="unpaid">❌ 未付</option><option value="half">⏳ 预付50%</option></select></div><div class="fr"><label>金额（元）</label><input type="number" id="am30" value="" placeholder="380" inputmode="decimal"></div></div><div class="fr"><label>备注</label><input type="text" id="nt30" value="" placeholder="其他备注"></div><button class="bsave" onclick="saveD(30)">💾  保存记录</button><button class="bclr" onclick="clrD(30)">🗑️  清空此条</button></div></div></div>
+  <div id="sumbox"><div class="sumbox"><h3>📊 5月全部房间收入汇总</h3><div class="sr"><span>🏊 1楼泳池房（101/102/103）</span><span class="am pool">¥0</span></div><div class="sr"><span>🌿 2楼标准间（201~204）</span><span class="am floor2">¥0</span></div><div class="sr"><span>本月总收入</span><span style="font-weight:700">¥0</span></div></div></div>
+</div>
+<div class="toast" id="toast">✅ 已保存</div>
+
+<script>
+var ROOMS=[
+  {n:'101室',f:1,l:'靠泳池',p:380,t:'pool'},
+  {n:'102室',f:1,l:'靠泳池',p:380,t:'pool'},
+  {n:'103室',f:1,l:'靠泳池',p:380,t:'pool'},
+  {n:'201室',f:2,l:'标准间',p:280,t:'floor2'},
+  {n:'202室',f:2,l:'标准间',p:280,t:'floor2'},
+  {n:'203室',f:2,l:'标准间',p:280,t:'floor2'},
+  {n:'204室',f:2,l:'标准间',p:280,t:'floor2'}
+];
+var CR=0,CM=5,OD=null;
+
+function sk(r,m,d){return'ms_'+r+'_'+m+'_'+d}
+function gd(r,m,d){try{var s=localStorage.getItem(sk(r,m,d));return s?JSON.parse(s):{ci:'',co:'',gs:'',ph:'',py:'',am:'',nt:''}}catch(e){return{ci:'',co:'',gs:'',ph:'',py:'',am:'',nt:''}}}
+function sv(r,m,d,o){try{localStorage.setItem(sk(r,m,d),JSON.stringify(o))}catch(e){}}
+
+function showToast(msg){
+  var t=document.getElementById('toast');
+  t.textContent=msg||'✅ 已保存';
+  t.className='toast show';
+  setTimeout(function(){t.className='toast'},1800);
+}
+
+function chgM(d){
+  var s=document.getElementById('msel');
+  var v=parseInt(s.value)+d;
+  if(v<1||v>12)return;
+  s.value=v; CM=v; OD=null; render();
+}
+
+function init(){CM=parseInt(document.getElementById('msel').value);OD=null;render();}
+
+function render(){
+  renderTabs(); renderInfo(); renderStats(); renderDays(); renderSum();
+}
+
+function renderTabs(){
+  var h='';
+  for(var i=0;i<ROOMS.length;i++){
+    var r=ROOMS[i];
+    h+='<div class="rtab '+r.t+(i===CR?' on':'')+'" onclick="selR('+i+')">'+r.n+'</div>';
+  }
+  document.getElementById('rtabs').innerHTML=h;
+}
+
+function selR(i){CR=i;OD=null;render();}
+
+function renderInfo(){
+  var r=ROOMS[CR];
+  document.getElementById('rinfo').innerHTML=
+    '<div class="room-info '+r.t+'">'+
+    '<div class="ico">'+(r.t==='pool'?'🏊':'🌿')+'</div>'+
+    '<div class="txt"><p>'+r.n+'</p><span>'+r.f+'楼 · '+r.l+'</span></div>'+
+    '<div class="pr">¥'+r.p+'<span style="font-size:12px;font-weight:400">/晚</span></div>'+
+    '</div>';
+}
+
+function renderStats(){
+  var booked=0,rev=0,unpaid=0;
+  for(var d=1;d<=30;d++){
+    var rec=gd(CR,CM,d);
+    if(rec.gs){booked++;rev+=parseFloat(rec.am)||0;if(rec.py==='unpaid')unpaid++;}
+  }
+  document.getElementById('stats').innerHTML=
+    '<div class="sc"><div class="lb">本月入住</div><div class="vl">'+booked+'<small> 天</small></div></div>'+
+    '<div class="sc"><div class="lb">本月收入</div><div class="vl" style="color:#117A65;font-size:'+(rev>=10000?'19':'23')+'px">¥'+rev.toLocaleString()+'</div></div>'+
+    '<div class="sc"><div class="lb">空房天数</div><div class="vl">'+(30-booked)+'<small> 天</small></div></div>'+
+    '<div class="sc"><div class="lb">待收款</div><div class="vl" style="color:'+(unpaid>0?'#C0392B':'#1a1a1a')+'">'+unpaid+'<small> 天</small></div></div>';
+}
+
+function renderDays(){
+  var r=ROOMS[CR];
+  var pm={paid:'✅ 已付',unpaid:'❌ 未付',half:'⏳ 预付50%'};
+  var h='';
+  for(var d=1;d<=30;d++){
+    var rec=gd(CR,CM,d);
+    var isO=(OD===d);
+    var bC=rec.py?rec.py:'none';
+    var bT=rec.py?(pm[rec.py]||rec.py):'空房';
+    var ds=rec.ci?(rec.ci+(rec.co?' → '+rec.co:'')):(CM+'月'+d+'日');
+    var as=rec.am?' · ¥'+parseFloat(rec.am).toLocaleString():'';
+    var gn=rec.gs?rec.gs:'<span style="color:#ccc">点击填写</span>';
+    h+='<div class="dc" id="dc'+d+'">';
+    h+='<div class="dh '+r.t+'" onclick="tog('+d+')">';
+    h+='<div class="db">'+d+'</div>';
+    h+='<div class="di"><div class="gn">'+gn+'</div><div class="gs">'+ds+as+'</div></div>';
+    h+='<span class="badge '+bC+'">'+bT+'</span>';
+    h+='<span class="cv'+(isO?' op':'')+'">⌄</span>';
+    h+='</div>';
+    h+='<div class="df'+(isO?' op':'')+' '+(r.t==='pool'?'pool-f':'floor2-f')+'" id="df'+d+'">';
+    h+='<div class="two">';
+    h+='<div class="fr"><label>入住日期</label><input type="date" id="ci'+d+'" value="'+rec.ci+'" onchange="live('+d+')"></div>';
+    h+='<div class="fr"><label>退房日期</label><input type="date" id="co'+d+'" value="'+rec.co+'" onchange="live('+d+')"></div>';
+    h+='</div>';
+    h+='<div class="fr"><label>客人姓名</label><input type="text" id="gs'+d+'" value="'+esc(rec.gs)+'" placeholder="请输入姓名"></div>';
+    h+='<div class="fr"><label>联系方式</label><input type="tel" id="ph'+d+'" value="'+esc(rec.ph)+'" placeholder="手机号码" inputmode="tel"></div>';
+    h+='<div class="two">';
+    h+='<div class="fr"><label>付款状态</label><select id="py'+d+'" onchange="live('+d+')">';
+    h+='<option value="">请选择</option>';
+    h+='<option value="paid"'+(rec.py==='paid'?' selected':'')+'>✅ 已付</option>';
+    h+='<option value="unpaid"'+(rec.py==='unpaid'?' selected':'')+'>❌ 未付</option>';
+    h+='<option value="half"'+(rec.py==='half'?' selected':'')+'>⏳ 预付50%</option>';
+    h+='</select></div>';
+    h+='<div class="fr"><label>金额（元）</label><input type="number" id="am'+d+'" value="'+rec.am+'" placeholder="'+r.p+'" inputmode="decimal"></div>';
+    h+='</div>';
+    h+='<div class="fr"><label>备注</label><input type="text" id="nt'+d+'" value="'+esc(rec.nt)+'" placeholder="其他备注"></div>';
+    h+='<button class="bsave" onclick="saveD('+d+')">💾  保存记录</button>';
+    h+='<button class="bclr" onclick="clrD('+d+')">🗑️  清空此条</button>';
+    h+='</div></div>';
+  }
+  document.getElementById('days').innerHTML=h;
+}
+
+function esc(s){return(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
+
+function tog(d){
+  OD=(OD===d)?null:d;
+  renderDays();
+  if(OD){setTimeout(function(){var e=document.getElementById('dc'+d);if(e)e.scrollIntoView({behavior:'smooth',block:'start'})},80);}
+}
+
+function getF(d){
+  return{
+    ci:document.getElementById('ci'+d)?.value||'',
+    co:document.getElementById('co'+d)?.value||'',
+    gs:document.getElementById('gs'+d)?.value||'',
+    ph:document.getElementById('ph'+d)?.value||'',
+    py:document.getElementById('py'+d)?.value||'',
+    am:document.getElementById('am'+d)?.value||'',
+    nt:document.getElementById('nt'+d)?.value||''
+  };
+}
+
+function live(d){sv(CR,CM,d,getF(d));renderStats();renderSum();}
+
+function saveD(d){
+  sv(CR,CM,d,getF(d));
+  showToast('✅ 已保存');
+  renderStats();renderSum();renderDays();
+}
+
+function clrD(d){
+  if(confirm('确定清空'+CM+'月'+d+'日记录？')){
+    sv(CR,CM,d,{ci:'',co:'',gs:'',ph:'',py:'',am:'',nt:''});
+    OD=null;render();
+  }
+}
+
+function renderSum(){
+  var p=0,f=0;
+  for(var ri=0;ri<7;ri++){
+    for(var d=1;d<=30;d++){
+      var a=parseFloat(gd(ri,CM,d).am)||0;
+      if(ROOMS[ri].t==='pool')p+=a;else f+=a;
+    }
+  }
+  document.getElementById('sumbox').innerHTML=
+    '<div class="sumbox"><h3>📊 '+CM+'月全部房间收入汇总</h3>'+
+    '<div class="sr"><span>🏊 1楼泳池房（101/102/103）</span><span class="am pool">¥'+p.toLocaleString()+'</span></div>'+
+    '<div class="sr"><span>🌿 2楼标准间（201~204）</span><span class="am floor2">¥'+f.toLocaleString()+'</span></div>'+
+    '<div class="sr"><span>本月总收入</span><span style="font-weight:700">¥'+(p+f).toLocaleString()+'</span></div>'+
+    '</div>';
+}
+
+window.onload=function(){render();};
+</script>
+
+
+</body></html>
